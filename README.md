@@ -6,8 +6,12 @@ A program to calculate vesting schedules.
 
 ## Environment setup:
 
+Dependencies managed via Poetry: https://python-poetry.org/
+
+Once installed:
 ```
 poetry install
+poetry shell
 ```
 
 ## How to run:
