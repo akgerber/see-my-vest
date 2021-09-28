@@ -1,3 +1,4 @@
+import typing
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from typing import List, TextIO, Dict
@@ -78,15 +79,23 @@ def calculate_vested_by_date(events: List[VestEvent], target_date: datetime) -> 
 
 
 def generate_csv_output(
-    awards: Dict[EmployeeID, EmployeeEquityAwards], target_date: datetime
+    awards: Dict[EmployeeID, EmployeeEquityAwards],
+    target_date: datetime,
+    precision: int,
 ):
+    """
+    Sort and process equity award information at target_date and output as CSV
+    :param awards: EmployeeEquityAwards keyed by Employee ID
+    :param target_date: Date at which to calculate the current equity awarded
+    :param precision: How many decimal digits to output
+    """
     for employee_id in sorted(awards.keys()):
         for award_id in sorted(awards[employee_id].equity_awards.keys()):
             name = awards[employee_id].employee_name
             shares_vested = calculate_vested_by_date(
                 awards[employee_id].equity_awards[award_id].vest_events, target_date
             )
-            click.echo(f"{employee_id},{name},{award_id},{shares_vested}")
+            click.echo(f"{employee_id},{name},{award_id},{shares_vested:.{precision}f}")
 
 
 @click.command()
@@ -97,13 +106,20 @@ def main(vesting_events_csv, target_date, precision):
     try:
         input_events = read_csv_input(vesting_events_csv)
         awards = process_input_events(input_events, precision)
-        generate_csv_output(awards, target_date)
+        generate_csv_output(awards, target_date, precision)
+        return 0
     except CsvValueError as e:
-        click.echo(f"CSV parsing failed: {e}")
+        click.echo(f"CSV parsing failed: {e}", err=True)
+        return 1
     except InvalidOperation as e:
-        click.echo(f"Decimal parsing failed: {e}")
+        click.echo(f"Decimal parsing failed: {e}", err=True)
+        return 1
     except ValueError as e:
-        click.echo(f"Invalid input: {e}")
+        click.echo(f"Invalid input: {e}", err=True)
+        return 1
+    except Exception as e:
+        click.echo(f"Unexpected exception: {e}", err=True)
+        return 1
 
 
 if __name__ == "__main__":

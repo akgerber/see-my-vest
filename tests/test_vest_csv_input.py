@@ -5,7 +5,7 @@ from see_my_vest import read_csv_input
 
 
 def test_read_csv_input_happy_path():
-    with open("tests/csv_data/example2.csv") as csv:
+    with open("tests/csv_data/example4.csv") as csv:
         events = read_csv_input(csv)
         assert len(events) == 9
 

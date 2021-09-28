@@ -8,7 +8,7 @@ from parse_decimal import parse_decimal
 
 
 @dataclass
-class TestCase:
+class DecimalTestCase:
     input: str
     precision: int
     expected: Decimal
@@ -23,12 +23,12 @@ class FailureCase:
 
 def test_happy_path():
     tests = [
-        TestCase("10.5044444", 2, Decimal(10.50)),
-        TestCase("10.5099900", 2, Decimal(10.50)),
-        TestCase("00.5099900", 2, Decimal(0.50)),
-        TestCase("000000000.5099900", 2, Decimal(0.50)),
-        TestCase("0.5", 6, Decimal(0.5)),
-        TestCase("10.5044444", 0, Decimal(10)),
+        DecimalTestCase("10.5044444", 2, Decimal(10.50)),
+        DecimalTestCase("10.5099900", 2, Decimal(10.50)),
+        DecimalTestCase("00.5099900", 2, Decimal(0.50)),
+        DecimalTestCase("000000000.5099900", 2, Decimal(0.50)),
+        DecimalTestCase("0.5", 6, Decimal(0.5)),
+        DecimalTestCase("10.5044444", 0, Decimal(10)),
     ]
     for test in tests:
         assert parse_decimal(test.input, test.precision) == test.expected
