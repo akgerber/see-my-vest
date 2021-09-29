@@ -26,6 +26,7 @@ def test_happy_path():
         DecimalTestCase("10.5044444", 2, Decimal(10.50)),
         DecimalTestCase("10.5099900", 2, Decimal(10.50)),
         DecimalTestCase("00.5099900", 2, Decimal(0.50)),
+        DecimalTestCase("10.75", 2, Decimal(10.75)),
         DecimalTestCase("000000000.5099900", 2, Decimal(0.50)),
         DecimalTestCase("0.5", 6, Decimal(0.5)),
         DecimalTestCase("10.5044444", 0, Decimal(10)),
