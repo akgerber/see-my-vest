@@ -19,7 +19,7 @@ poetry shell
 
 ## How to run:
 ```
-python3 see_my_vest.py  --help
+python see_my_vest.py  --help
 python see_my_vest.py tests/csv_data/example3.csv 2020-04-01 0
 
 ```
