@@ -21,6 +21,7 @@ class TestE2E(unittest.TestCase):
         runner = CliRunner()
         tests = [
             E2ETestCase("example1.csv", "2020-04-01", "0", "expected1_2020-04-01.csv"),
+            E2ETestCase("example1_disordered.csv", "2020-04-01", "0", "expected1_2020-04-01.csv"),
             E2ETestCase("example2.csv", "2021-01-01", "0", "expected2_2021-01-01.csv"),
             E2ETestCase("example3.csv", "2021-01-01", "1", "expected3_2021-01-01.csv"),
         ]
@@ -33,7 +34,9 @@ class TestE2E(unittest.TestCase):
                     test.precision,
                 ],
             )
-            with open(self._DATADIR + test.expected_output) as expected:
+            with open(
+                self._DATADIR + test.expected_output, encoding="utf8"
+            ) as expected:
                 self.assertListEqual(
                     result.output.splitlines(keepends=True), list(expected)
                 )

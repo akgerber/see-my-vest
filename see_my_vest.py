@@ -1,4 +1,3 @@
-import typing
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from typing import List, TextIO, Dict
@@ -60,7 +59,7 @@ def read_csv_input(vesting_events_csv: TextIO) -> List[VestEventInput]:
             "quantity",
         ],
     )
-    return [row for row in reader]
+    return list(reader)
 
 
 def calculate_vested_by_date(events: List[VestEvent], target_date: datetime) -> Decimal:
@@ -68,7 +67,7 @@ def calculate_vested_by_date(events: List[VestEvent], target_date: datetime) -> 
     for event in events:
         if event.date > target_date:
             continue
-        # TODO: refactor to pattern matching in Python 3.10
+        # refactor to pattern matching in Python 3.10
         if event.event_type == "VEST":
             vested += event.quantity
         elif event.event_type == "CANCEL":
@@ -117,10 +116,7 @@ def main(vesting_events_csv, target_date, precision):
     except ValueError as e:
         click.echo(f"Invalid input: {e}", err=True)
         return 1
-    except Exception as e:
-        click.echo(f"Unexpected exception: {e}", err=True)
-        return 1
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter
